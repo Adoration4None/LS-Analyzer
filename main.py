@@ -26,8 +26,8 @@ class Main(QMainWindow):
         self.home.bt_archivo.clicked.connect(self.ev_archivo)
         self.home.bt_limpiar.clicked.connect(self.ev_limpiar)
 
-        #Desarrollandores
-        self.home.estado.showMessage("Desarrollando  Juan David Saza, Juan José Herrera, Samuel Echeverri")
+        #Desarrolladores
+        self.home.estado.showMessage("Juan David Saza, Juan José Herrera, Samuel Echeverri")
 
     def ev_lexico(self):
         '''

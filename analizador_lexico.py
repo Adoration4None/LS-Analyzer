@@ -142,7 +142,7 @@ def t_DIFERENTE(t):
    r'NO ES'
    return t
 
-def t_NEGACION(t):
+def t_NOT(t):
     r'NO'
     return t
 

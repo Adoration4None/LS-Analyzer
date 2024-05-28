@@ -1,8 +1,4 @@
-1222
-*
--
-+
-/
-12345
-%
-$
+sea variable = "hola" un texto
+numerica = 3 SUM 4
+(3 MUL 2) RES 5
+sea lista = [5, 4, 3, 2, 7]

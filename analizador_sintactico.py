@@ -8,8 +8,7 @@ resultado_gramatica = []
 precedence = (
     ('right','ASIGNAR'),
     ('left', 'SUMA', 'RESTA'),
-    ('left', 'MULTIPLICACION', 'DIVISION'),
-    #('right', 'UMINUS'),
+    ('left', 'MULTIPLICACION', 'DIVISION')
 )
 nombres = {}
 
@@ -46,10 +45,6 @@ def p_expresion_operaciones(t):
     elif t[2] == 'MOD':
         t[0] = t[1] % t[3]
 
-#def p_expresion_uminus(t):
-#    'expresion : RES expresion %prec UMINUS'
-#    t[0] = -t[2]
-
 def p_expresion_grupo(t):
     '''
     expresion  : PARIZQ expresion PARDER
@@ -77,6 +72,8 @@ def p_expresion_relacional(t):
         t[0] = t[1] >= t[3]
     elif t[2] == "ES":
         t[0] = t[1] == t[3]
+    elif t[2] == "NO ES":
+        t[0] = t[1] != t[3]
 
 def p_expresion_logica(t):
     '''

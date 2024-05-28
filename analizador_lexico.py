@@ -5,63 +5,60 @@ resultado_lexema = []
 
 # Palabras reservadas
 reservadas = (
-    'mientras', 'para', 'desde', 'hasta', 'en',
-    'si', 'sino', 'clase',
-    'entero', 'gran_entero', 'real', 'gran_real', 'texto', 'caracter'
+    'TRAER', 'DE',
+    'SEA', 'UN', 'FIN',
+    'CONSTANTE',
+    'SI', 'SINO',
+    'MIENTRAS', 'PARA', 'DESDE', 'HASTA', 'EN',
+    'CLASE'
 )
 
 # Tokens
 tokens = reservadas + (
     # Operadores aritméticos
-    'SUMA', 'RESTA', 'MULTIPLICACION', 'DIVISION', 'DIVISION_ENTERA', 'POTENCIA', 'EDIV', 'MOD',
+    'SUMA', 'RESTA', 'MULTIPLICACION', 'DIVISION', 'DIVISION_ENTERA', 'POTENCIA', 'MODULO',
+
+    # Incremento/Decremento
+    'MENOSMENOS', 'MASMAS',
 
     # Operadores relacionales
     'MENOR', 'MENOR_IGUAL', 'MAYOR', 'MAYOR_IGUAL', 'IGUAL',
 
     # Operadores lógicos
-    'NO', 'Y', 'O',
+    'NOT', 'AND', 'OR',
 
     # Operadores de asignación
     'ASIGNAR', 'MAS_IGUAL', 'MENOS_IGUAL',
 
     # Símbolos
-    'DOSPUNTOS', 'LLAIZQ', 'LLADER', 'CORCHIZQ', 'CORCHDER', 'PARIZQ', 'PARDER',
+    'COMA', 'PUNTO', 'DOSPUNTOS', 'LLAIZQ', 'LLADER', 'CORCHIZQ', 'CORCHDER', 'PARIZQ', 'PARDER',
 
     # Separador de sentencias
-    'SALTO_LINEA',
+    # 'SALTO_LINEA',
 
     # Identificadores
     'IDENTIFICADOR',
 
-    # Valores de asignación
-    'ENTERO', 'REAL', 'TEXTO', 'CARACTER'
+    # Tipos de dato
+    'ENTERO', 'REAL', 'TEXTO', 'CARACTER', 'BOOL'
 )
 
 # Expresiones regulares para tokens simples
-t_SUMA = r'SUM'
-t_RESTA = r'RES'
-t_MULTIPLICACION = r'MUL'
-t_DIVISION = r'DIV'
-t_DIVISION_ENTERA = r'EDIV'
-t_POTENCIA = 'POW'
-t_MOD = r'MOD'
+t_MENOSMENOS = r'\-\-'
+t_MASMAS = r'\+\+'
 
-t_MENOR = r'MEN'
-t_MENOR_IGUAL = r'MENI'
-t_MAYOR = r'MAY'
-t_MAYOR_IGUAL = r'MAYI'
-t_IGUAL = r'ES'
-
-t_NO = r'NO'
-t_Y = r'Y'
-t_O = r'O'
+t_AND = r'Y'
+t_OR = r'O'
 
 t_ASIGNAR = r'='
-t_MAS_IGUAL = r'\+='
-t_MENOS_IGUAL = r'-='
-t_DOSPUNTOS = r':'
-t_LLAIZQ = r'{'
-t_LLADER = r'}'
+t_MAS_IGUAL = r'\+\='
+t_MENOS_IGUAL = r'\-\='
+
+t_COMA = r'\,'
+t_PUNTO = r'\.'
+t_DOSPUNTOS = r'\:'
+t_LLAIZQ = r'\{'
+t_LLADER = r'\}'
 t_CORCHIZQ = r'\['
 t_CORCHDER = r'\]'
 t_PARIZQ = r'\('
@@ -69,7 +66,86 @@ t_PARDER = r'\)'
 
 
 
-# Valores de asignación
+def t_TRAER(t):
+    r'traer'
+    return t
+
+def t_DE(t):
+    r'de'
+    return t
+
+def t_SEA(t):
+    r'sea'
+    return t
+
+def t_UN(t):
+    r'un'
+    return t
+
+def t_FIN(t):
+    r'fin'
+    return t
+
+def t_CONSTANTE(t):
+    r'constante'
+    return t
+
+def t_SUMA(t):
+   r'SUM'
+   return t
+
+def t_RESTA(t):
+   r'RES'
+   return t
+
+def t_MULTIPLICACION(t):
+   r'MUL'
+   return t
+
+def t_DIVISION(t):
+   r'DIV'
+   return t
+
+def t_DIVISION_ENTERA(t):
+   r'EDIV'
+   return t
+
+def t_POTENCIA(t):
+   r'POW'
+   return t
+
+def t_MODULO(t):
+   r'MOD'
+   return t
+
+def t_MENOR(t):
+   r'MEN'
+   return t
+
+def t_MENOR_IGUAL(t):
+   r'MENI'
+   return t
+
+def t_MAYOR(t):
+   r'MAY'
+   return t
+
+def t_MAYOR_IGUAL(t):
+   r'MOD'
+   return t
+
+def t_IGUAL(t):
+   r'ES'
+   return t
+
+def t_DIFERENTE(t):
+   r'NO ES'
+   return t
+
+def t_NEGACION(t):
+    r'NO'
+    return t
+
 def t_ENTERO(t):
     r'\d+'
     t.value = int(t.value)
@@ -80,19 +156,18 @@ def t_REAL(t):
     t.value = float(t.value)
     return t
 
-def t_TEXTO(t):
-    r'".*"'
-    t.value = t.value.strip('"')
+# Identificador de variable
+def t_IDENTIFICADOR(t):
+    r'\w+(_\d\w)*'
     return t
+
+def t_TEXTO(t):
+   r'\"?(\w+ \ *\w*\d* \ *)\"?'
+   return t
 
 def t_CARACTER(t):
     r"'.*'"
     t.value = t.value.strip("'")
-    return t
-
-# Identificador de variable
-def t_IDENTIFICADOR(t):
-    r'\w+(_\d\w)*'
     return t
 
 # Ignorar espacios y tabulaciones

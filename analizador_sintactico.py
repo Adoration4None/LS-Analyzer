@@ -8,8 +8,8 @@ resultado_gramatica = []
 precedence = (
     ('right','ASIGNAR'),
     ('left', 'SUMA', 'RESTA'),
-    ('left', 'MULTIPLICACION', 'DIVISION_ENTERA'),
-    ('right', 'UMINUS'),
+    ('left', 'MULTIPLICACION', 'DIVISION'),
+    #('right', 'UMINUS'),
 )
 nombres = {}
 
@@ -23,12 +23,13 @@ def p_declaracion_expr(t):
 
 def p_expresion_operaciones(t):
     '''
-    expresion  :   expresion SUM expresion
-                |   expresion RES expresion
-                |   expresion MUL expresion
-                |   expresion DIV expresion
-                |   expresion POW expresion
-                |   expresion MOD expresion
+    expresion  :   expresion SUMA expresion
+                |   expresion RESTA expresion
+                |   expresion MULTIPLICACION expresion
+                |   expresion DIVISION expresion
+                |   expresion DIVISION_ENTERA expresion
+                |   expresion POTENCIA expresion
+                |   expresion MODULO expresion
     '''
     if t[2] == 'SUM':
         t[0] = t[1] + t[3]
@@ -38,14 +39,16 @@ def p_expresion_operaciones(t):
         t[0] = t[1] * t[3]
     elif t[2] == 'DIV':
         t[0] = t[1] / t[3]
+    elif t[2] == 'EDIV':
+        t[0] = t[1] // t[3]
     elif t[2] == 'POW':
         t[0] = t[1] ** t[3]
     elif t[2] == 'MOD':
         t[0] = t[1] % t[3]
 
-def p_expresion_uminus(t):
-    'expresion : RES expresion %prec UMINUS'
-    t[0] = -t[2]
+#def p_expresion_uminus(t):
+#    'expresion : RES expresion %prec UMINUS'
+#    t[0] = -t[2]
 
 def p_expresion_grupo(t):
     '''
@@ -57,11 +60,12 @@ def p_expresion_grupo(t):
 
 def p_expresion_relacional(t):
     '''
-    expresion   :   expresion MEN expresion
-                |   expresion MENI expresion
-                |   expresion MAY expresion
-                |   expresion MAYI expresion
-                |   expresion ES expresion
+    expresion   :   expresion MENOR expresion
+                |   expresion MENOR_IGUAL expresion
+                |   expresion MAYOR expresion
+                |   expresion MAYOR_IGUAL expresion
+                |   expresion IGUAL expresion
+                |   expresion DIFERENTE expresion
     '''
     if t[2] == "MEN":
         t[0] = t[1] < t[3]
@@ -78,25 +82,42 @@ def p_expresion_logica(t):
     '''
     expresion   :   expresion AND expresion
                 |   expresion OR expresion
-                |   NO expresion
+                |   NOT expresion
+                |  PARIZQ expresion AND expresion PARDER
+                |  PARIZQ expresion OR expresion PARDER
+                |  PARIZQ expresion NOT expresion PARDER
     '''
     if t[2] == "Y":
         t[0] = t[1] and t[3]
     elif t[2] == "O":
         t[0] = t[1] or t[3]
-    elif t[1] == "NO":
-        t[0] = not t[2]
+    elif t[2] == "NO":
+        t[0] =  t[1] is not t[3]
+    elif t[3] == "Y":
+        t[0] = t[2] and t[4]
+    elif t[3] == "O":
+        t[0] = t[2] or t[4]
+    elif t[3] == "NO":
+        t[0] =  t[2] is not t[4]
 
-def p_expresion_numero(t):
+def p_expresion_entero(t):
     'expresion : ENTERO'
     t[0] = t[1]
 
-def p_expresion_cadena(t):
+def p_expresion_real(t):
+    'expresion : REAL'
+    t[0] = t[1]
+
+def p_expresion_texto(t):
     'expresion : TEXTO'
     t[0] = t[1]
 
 def p_expresion_caracter(t):
     'expresion : CARACTER'
+    t[0] = t[1]
+
+def p_expresion_bool(t):
+    'expresion : BOOL'
     t[0] = t[1]
 
 def p_expresion_identificador(t):

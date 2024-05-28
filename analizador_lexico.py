@@ -22,7 +22,7 @@ tokens = reservadas + (
     'MENOSMENOS', 'MASMAS',
 
     # Operadores relacionales
-    'MENOR', 'MENOR_IGUAL', 'MAYOR', 'MAYOR_IGUAL', 'IGUAL',
+    'MENOR', 'MENOR_IGUAL', 'MAYOR', 'MAYOR_IGUAL', 'IGUAL', 'DIFERENTE',
 
     # Operadores lógicos
     'NOT', 'AND', 'OR',
@@ -37,7 +37,7 @@ tokens = reservadas + (
     # 'SALTO_LINEA',
 
     # Identificadores
-    'IDENTIFICADOR',
+    'IDENTIFICADOR', 'TIPO_ENTERO', 'TIPO_REAL', 'TIPO_TEXTO', 'TIPO_CARACTER', 'TIPO_BOOL',
 
     # Tipos de dato
     'ENTERO', 'REAL', 'TEXTO', 'CARACTER', 'BOOL'
@@ -156,6 +156,26 @@ def t_REAL(t):
     t.value = float(t.value)
     return t
 
+def t_TIPO_ENTERO(t):
+    r'entero'
+    return t
+
+def t_TIPO_REAL(t):
+    r'real'
+    return t
+
+def t_TIPO_TEXTO(t):
+    r'texto'
+    return t
+
+def t_TIPO_CARACTER(t):
+    r'caracter'
+    return t
+
+def t_TIPO_BOOL(t):
+    r'bool'
+    return t
+
 # Identificador de variable
 def t_IDENTIFICADOR(t):
     r'\w+(_\d\w)*'
@@ -180,6 +200,23 @@ def t_error(t):
                                                                                    str(t.lexpos))
     resultado_lexema.append(estado)
     t.lexer.skip(1)
+
+# Prueba de ingreso
+def prueba(data):
+    global resultado_lexema
+
+    analizador = lex.lex()
+    analizador.input(data)
+
+    resultado_lexema.clear()
+    while True:
+        tok = analizador.token()
+        if not tok:
+            break
+        # print("lexema de "+tok.type+" valor "+tok.value+" linea "tok.lineno)
+        estado = "Linea {:4} Tipo {:16} Valor {:16} Posicion {:4}".format(str(tok.lineno),str(tok.type) ,str(tok.value), str(tok.lexpos) )
+        resultado_lexema.append(estado)
+    return resultado_lexema
 
 # Instanciamos el analizador léxico
 analizador = lex.lex()
